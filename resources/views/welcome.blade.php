@@ -69,8 +69,18 @@
                 <div class="top-right links">
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
+
+                        <div class="title m-b-md">
+                            <h6>Bonjour {{auth::user()->name}}</h6>
+                        </div>
+                    
                     @else
-                        <a href="{{ route('login') }}">Login</a>
+                    
+                    <a href="{{ route('login') }}">Login</a>
+                        <div class="title m-b-md">
+                            Homepage
+                        </div>
+                    
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}">Register</a>
@@ -79,10 +89,6 @@
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Homepage
-                </div>
 
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>

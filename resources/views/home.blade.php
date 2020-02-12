@@ -22,6 +22,8 @@
                         <li>Nom : {{Auth::user()->firstname}}</li>
                         <li>Bio : {{Auth::user()->biography}}</li>
                     </ul>
+      
+                    </div>  
                 </div>
             </div>
         </div>

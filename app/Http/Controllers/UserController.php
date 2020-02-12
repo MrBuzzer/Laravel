@@ -14,8 +14,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('users.index', compact('users'));
+        return $this->indexSort('total');
+
+    public function indexSort($role)
+    {
+        $counts = $this->user_gestion->counts();
+        $users = $this->user_gestion->index(4, $role); 
+        $links = $users->setPath('')->render();
+        $roles = $this->role_gestion->all();
+        
+        return view('users');        
     }
 
     /**
@@ -66,6 +74,7 @@ class UserController extends Controller
     {
         return view('users.profile', ['user' => User::findOrFail($id)]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
