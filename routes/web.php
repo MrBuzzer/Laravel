@@ -35,5 +35,7 @@ Route::get('/users', function () { // Definition de la route sur le lien /users
     return view('users'); // On retourne la vue de la page users.blade.php
 })->name('users'); // et on donne un nom a cette route, ici users
 
-Route::resource('posts' , 'PostsController');
+Route::get('/userskill', function () { // Definition de la route sur le lien /users
+    return view('userskill'); // On retourne la vue de la page users.blade.php
+})->name('userskill'); // et on donne un nom a cette route, ici users
 
