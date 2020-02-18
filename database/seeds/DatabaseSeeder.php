@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(SkillTableSeeder::class);
+        $this->call(AdminSeeder::class);
         $skills = App\Skill::all(); 
         factory(App\User::class, 50)->create()->each(function($u) use ($skills) {
             $skillSet = $skills->random((rand(1,4)));

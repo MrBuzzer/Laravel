@@ -1,11 +1,11 @@
 <?php
-
+  
 namespace App\Http\Controllers;
-
+  
+use App\Skill;
 use Illuminate\Http\Request;
-use App\User;
-
-class UserController extends Controller
+  
+class SkillController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,18 +14,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->indexSort('total');
-
-    public function indexSort($role)
-    {
-        $counts = $this->user_gestion->counts();
-        $users = $this->user_gestion->index(4, $role); 
-        $links = $users->setPath('')->render();
-        $roles = $this->role_gestion->all();
-        
-        return view('users');        
+        $skill = Skill::latest()->paginate(5);
+  
+        return view('skill.index',compact('skill'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
-
+   
     /**
      * Show the form for creating a new resource.
      *
@@ -33,9 +27,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('skill.create');
     }
-
+  
     /**
      * Store a newly created resource in storage.
      *
@@ -45,75 +39,73 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required',
-            'firstname'=>'required',
-            'lastname'=>'required',
-            'email'=>'required',
-            'biography'=>'required'
+            'name' => 'required',
+            'description' => 'required',
+            'logo' => 'required',
+            
         ]);
-
-        $user = new User([
-            'name'=>$request->get('name'),
-            'firstname'=>$request->get('firstname'),
-            'firstname'=>$request->get('lastname'),
-            'firstname'=>$request->get('email'),
-            'biography'=>$request->get('biography')
-        ]);
-        $user->save();
-
-        return redirect('/users');
+  
+        Skill::create($request->all());
+   
+        return redirect()->route('skill.index')
+                        ->with('success','Skill created successfully.');
     }
-
+   
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Skill  $Skill
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Skill $skill)
     {
-        return view('users.profile', ['user' => User::findOrFail($id)]);
+        return view('skill.show',compact('skill'));
     }
-
-
+   
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Skill  $Skill
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Skill $skill)
     {
-        //
+        return view('skill.edit',compact('skill'));
     }
-
+  
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Skill  $Skill
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Skill $skill)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'logo' => 'required',
+            
+        ]);
+  
+        $skill->update($request->all());
+  
+        return redirect()->route('skill.index')
+                        ->with('success','Skill updated successfully');
     }
-
+  
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Skill  $Skill
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Skill $skill)
     {
-        //
+        $skill->delete();
+  
+        return redirect()->route('skill.index')
+                        ->with('success','Skill deleted successfully');
     }
-
-    public function index(
-        {
-            $users = User::all();
-            return view('users.users');
-        }
-    )
 }

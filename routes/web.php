@@ -39,3 +39,5 @@ Route::get('/userskill', function () { // Definition de la route sur le lien /us
     return view('userskill'); // On retourne la vue de la page users.blade.php
 })->name('userskill'); // et on donne un nom a cette route, ici users
 
+Route::resource('skill', 'SkillController');
+
